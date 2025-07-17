@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Authentication</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+
+</head>
+
+
+<body>
+
+  <div class="bg-shapes" aria-hidden="true">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+
+  <main class="auth-container">
+    <header class="auth-header">
+      <h1>Welcome</h1>
+      <p>Please sign in to your account or create a new one</p>
+    </header>
+  
+    <nav class="tab-nav" role="tablist">
+      <button class="tab-btn" role="tab" id="login-tab" aria-controls="login-panel" aria-selected="true">Sign In</button>
+      <button class="tab-btn" role="tab" id="signup-tab" aria-controls="signup-panel" aria-selected="false">Sign Up</button>
+      <div class="tab-indicator"></div>
+    </nav>
+  
+  
+    <div class="form-container">
+  
+      <section class="form-panel active" id="login-panel" role="tabpanel" aria-labelledby="login-tab">
+        <div class="success-message" id="login-success">
+          Welcome back! You've successfully signed in.
+        </div>
+      
+        <form id="login-form" novalidate>
+          <div class="floating-label">
+            <input type="email" id="login-email" name='email' placeholder=" " required aria-describedby="login-email-error">
+              <label for="login-email">Email Address</label>
+              <div class="error-message" id="login-email-error">Please enter a valid email address</div>
+          </div>
+      
+          <div class="floating-label">
+            <input type="password" id="login-password" name="password" placeholder=" " required minlength="6"
+              aria-describedby="login-password-error">
+              <label for="login-password">Password</label>
+              <div class="error-message" id="login-password-error">Password must be of at least 6 characters</div>
+          
+          </div>
+      
+          <div class="checkbox-group">
+            <input type="checkbox" id="remember-me" name="remember">
+            <label for="remember-me">Remember me</label>
+          </div>
+      
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </form>
+  
+      </section>
+  
+      <!-- signup form -->
+      <section class="form-panel" id="signup-panel" role="tabpanel" aria-labelledby="signup-tab">
+        <div class="success-message" id="signup-success">
+          Account created successfully. Please check your email for verification
+        </div>
+      
+        <form id="signup-form" novalidate>
+          <div class="form-group">
+            <label for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" name="name" required minlength="2" aria-describedby="signup-name-error">
+            <div class="error-message" id="signup-name-error">Please enter your full name</div>
+          </div>
+  
+          <div class="form-group">
+            <label for="signup-email">Email Address</label>
+            <input type="email" id="signup-email" name="email" required aria-describedby="signup-email-error">
+            <div class="error-message" id="signup-email-error">Please enter a valid email address</div>
+          </div>
+  
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" name="password" required 
+              minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+              aria-describedby="signup-password-error">
+            <div class="error-message" id="signup-password-error">
+                Password must be at least 8 characters with at least one uppercase, lowercase, number, and special character
+            </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" name="confirmPassword" required 
+            aria-describedby="confirm-password-error">
+          <div class="error-message" id="confirm-password-error">Passwords do not match</div>
+        </div>
+  
+  
+        <div class="form-group">
+          <label for="signup-role">Role</label>
+          <select id="signup-role" name="role" required aria-describedby="signup-role-error">
+            <option value="">Select your role</option>
+            <option value="user">User</option>
+            <option value="admin">Administrator</option>
+            <option value="moderator">Moderator</option>
+          </select>
+          <div class="error-message" id="signup-role-error">Please select a role</div>
+        </div>
+  
+        <div class="checkbox-group">
+          <input type="checkbox" id="terms" name="terms" required>
+          <label for="terms">I agree to the <a href="#" target="_blank">Terms of service</a> and <a href="#" target="_blank">Privacy Policy</a></label>
+        </div>
+  
+        <button type="submit" class="btn btn-primary">Create Account</button>
+          
+          
+        </form>
+      </section>
+    </div>
+  
+    <footer class="auth-footer">
+      <p>&copy; 2025 Your Company. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+  </main>
+
+
+</body>
+</html>
