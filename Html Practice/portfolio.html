@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Authentication</title>
+  <style>
+    .auth-header {
+      text-align: center;
+      padding: 2rem 2rem 1rem;
+      /* background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); */
+      background: linear-gradient(135deg, rgba(255, 255, 0, 1.0) 0%, rgba(255, 165, 0, 1.0) 100%) 
+        }
+
+    .tab-btn{
+      /* flex: 1; */
+      padding: 1rem;
+      border: none;
+      background: transparent;
+      color: var(--text-light);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3 ease;
+      position: relative;
+    }
+
+    .tab-indicator {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background-color: brown;
+      background: var(--primary-color);
+      width: 50%;
+
+    }
+
+    .floating-label {
+      position:relative;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Success Messages */
+    .success-message {
+      background: rgba(72, 187, 120, 0.1);
+      color: var(--success-color);
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      display: none;
+    }
+
+    /* Error Messages */
+    .error-message {
+      color: var(--error-color);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+
+    /* Checkbox and Radio Styling */
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Button Styles */
+    .btn {
+      width: 100%;
+      padding: 0.875rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: white;
+    }
+
+
+  </style>
+
+
+</head>
+
+
+<body>
+  <header class="auth-header">
+    <h1>Welcome</h1>
+    <p>Please sign in to your account or create a new one</p>
+  </header>
+
+  <nav>
+    <button class="tab-btn" role="tab" id="login-tab" aria-controls="login-panel" aria-selected="true">Sign In</button>
+    <button class="tab-btn" role="tab" id="signup-tab" aria-controls="signup-panel" aria-selected="false">Sign Up</button>
+    <div class="tab-indicator"></div>
+  </nav>
+
+  <div class="success-message" id="login-success">
+    Welcome back! You've successfully signed in.
+  </div>
+
+  <form id="login-form" novalidate>
+    <div class="floating-label">
+      <input type="email" id="login-email" name='email' placeholder=" " required aria-describedby="login-email-error">
+        <label for="login-email">Email Address</label>
+        <div class="error-message" id="login-email-error">Please enter a valid email address</div>
+    </div>
+
+    <div class="floating-label">
+      <input type="password" id="login-password" name="password" placeholder=" " required minlength="6"
+        aria-describedby="login-password-error">
+        <label for="login-password">Password</label>
+        <div class="error-message" id="login-password-error">Password must be of at least 6 characters</div>
+    
+    </div>
+
+    <div class="checkbox-group">
+      <input type="checkbox" id="remember-me" name="remember">
+      <label for="remember-me">Remember me</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sign In</button>
+  </form>
+
+<!-- 
+  <form id="login-form" novalidate>
+    <div class="floating-label">
+        <input type="email" id="login-email" name="email" placeholder=" " required 
+               aria-describedby="login-email-error">
+        <label for="login-email">Email Address</label>
+        <div class="error-message" id="login-email-error">Please enter a valid email address</div>
+    </div>
+
+    <div class="floating-label">
+        <input type="password" id="login-password" name="password" placeholder=" " required 
+               minlength="6" aria-describedby="login-password-error">
+        <label for="login-password">Password</label>
+        <div class="error-message" id="login-password-error">Password must be at least 6 characters</div>
+    </div>
+
+    <div class="checkbox-group">
+        <input type="checkbox" id="remember-me" name="remember">
+        <label for="remember-me">Remember me</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sign In</button>
+</form> -->
+
+
+
+
+
+
+  <!-- <button class="tab-btn active" id="login-tab" role="tab" aria-controls="login-panel" aria-selected="true">
+    Sign In
+</button>
+<button class="tab-btn" id="signup-tab" role="tab" aria-controls="signup-panel" aria-selected="false">
+    Sign Up
+</button> -->
+  
+  
+  
+</body>
+</html>
