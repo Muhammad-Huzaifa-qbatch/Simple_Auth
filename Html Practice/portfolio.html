@@ -5,6 +5,101 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modern Authentication</title>
   <style>
+
+    /* CSS Reset and Base Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+    :root {
+      --primary-color: #757781;
+      --primary-dark: #5a67d8;
+      --secondary-color: #06010b;
+      --success-color: #48bb78;
+      --error-color: #f56565;
+      --text-dark: #2d3748;
+      --text-light: #718096;
+      --bg-light: #f7fafc;
+      --bg-white: #ffffff;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Body and Background */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        line-height: 1.6;
+      }
+
+    .bg-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+
+    .shape {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+      width: 60px;
+      height: 60px;
+      top: 20%;
+      right: 20%;
+      animation-delay: 2s;
+    }
+
+    .shape:nth-child(3) {
+      width: 40px;
+      height: 40px;
+      bottom: 30%;
+      left: 30%;
+      animation-delay: 4s;
+    }        
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+        }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+
     .auth-header {
       text-align: center;
       padding: 2rem 2rem 1rem;
@@ -12,17 +107,47 @@
       background: linear-gradient(135deg, rgba(255, 255, 0, 1.0) 0%, rgba(255, 165, 0, 1.0) 100%) 
         }
 
-    .tab-btn{
-      /* flex: 1; */
-      padding: 1rem;
-      border: none;
-      background: transparent;
+    .auth-header h1 {
+      color: var(--text-dark);
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-header p {
       color: var(--text-light);
       font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3 ease;
-      position: relative;
+    }
+
+  /* Tab Navigation - Flexbox */
+  .tab-nav {
+    display: flex;
+    background: var(--bg-light);
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+  }
+
+  .tab-btn{
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    background: transparent;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3 ease;
+    position: relative;
+    }
+
+    .tab-btn.active {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary-dark);
+      background: rgba(102, 126, 234, 0.05);
     }
 
     .tab-indicator {
@@ -36,9 +161,36 @@
 
     }
 
+    .tab-indicator.signup {
+      transform: translateX(100%);
+    }
+
     .floating-label {
       position:relative;
       margin-bottom: 1.5rem;
+    }
+
+    .floating-label input {
+            padding: 1rem 0.75rem 0.5rem;
+        }
+
+    .floating-label label {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background: var(--bg-white);
+      padding: 0 0.25rem;
+      color: var(--text-light);
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      pointer-events: none;
+        }
+
+    .floating-label input:focus + label,
+    .floating-label input:not(:placeholder-shown) + label {
+        top: -0.5rem;
+        font-size: 0.75rem;
+        color: var(--primary-color);
     }
 
     /* Success Messages */
@@ -52,6 +204,10 @@
       display: none;
     }
 
+    .success-message.show {
+        display: block;
+    }
+
     /* Error Messages */
     .error-message {
       color: var(--error-color);
@@ -60,6 +216,14 @@
       display: none;
     }
 
+    .form-group.error .error-message {
+            display: block;
+        }
+
+    .form-group.error input {
+        border-color: var(--error-color);
+        }
+
     /* Checkbox and Radio Styling */
     .checkbox-group {
       display: flex;
@@ -67,6 +231,18 @@
       gap: 0.5rem;
       margin-bottom: 1.5rem;
     }
+
+    .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+    .checkbox-group label {
+      margin: 0;
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
 
     /* Button Styles */
     .btn {
@@ -87,6 +263,201 @@
       color: white;
     }
 
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .form-panel {
+      display: none;
+      animation: slideIn 0.3s ease-out;
+    }
+
+
+    .form-panel.active {
+            display: block;
+        }
+
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+
+    .form-group label {
+      display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.875rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+        background: var(--bg-white);
+    }
+
+
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group input:invalid:not(:focus):not(:placeholder-shown) {
+        border-color: var(--error-color);
+    }
+
+    .form-group input:valid:not(:focus):not(:placeholder-shown) {
+        border-color: var(--success-color);
+    }
+
+  
+
+
+
+
+
+
+
+
+
+
+    .form-container {
+      padding: 2rem;
+      position: relative;
+    }
+
+    /* Main Container - CSS Grid */
+    .auth-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      width: 100%;
+      background: var(--bg-white);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      position: relative;
+      }
+
+
+    .auth-footer {
+          padding: 1rem 2rem;
+          background: var(--bg-light);
+          text-align: center;
+          border-top: 1px solid var(--border-color);
+      }
+
+    .auth-footer p {
+        color: var(--text-light);
+        font-size: 0.875rem;
+    }
+
+    .auth-footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+
+    /* Responsive Design - Media Queries */
+    @media (max-width: 768px) {
+      .auth-container {
+          max-width: 100%;
+          margin: 0 1rem;
+      }
+
+      .auth-header {
+          padding: 1.5rem 1.5rem 0.75rem;
+      }
+
+      .auth-header h1 {
+          font-size: 1.5rem;
+      }
+
+      .form-container {
+          padding: 1.5rem;
+      }
+
+      .auth-footer {
+          padding: 0.75rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+        body {
+            padding: 0.5rem;
+        }
+
+        .auth-header h1 {
+            font-size: 1.25rem;
+        }
+
+        .form-container {
+            padding: 1rem;
+        }
+
+        .btn {
+            padding: 1rem;
+            font-size: 0.875rem;
+        }
+    }
+
+    /* Dark Mode Support */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --bg-white: #1a202c;
+            --text-dark: #f7fafc;
+            --text-light: #a0aec0;
+            --border-color: #2d3748;
+            --bg-light: #2d3748;
+        }
+    }
+
+    @media print {
+    .bg-shapes,
+    .auth-footer {
+        display: none; /* Hide background shapes and footer when printing */
+    }
+
+    .auth-container {
+        box-shadow: none;         /* Remove any shadows */
+        border: 1px solid #000;   /* Add a clear border for printed version */
+    }
+    }
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   </style>
 
@@ -95,81 +466,271 @@
 
 
 <body>
-  <header class="auth-header">
-    <h1>Welcome</h1>
-    <p>Please sign in to your account or create a new one</p>
-  </header>
 
-  <nav>
-    <button class="tab-btn" role="tab" id="login-tab" aria-controls="login-panel" aria-selected="true">Sign In</button>
-    <button class="tab-btn" role="tab" id="signup-tab" aria-controls="signup-panel" aria-selected="false">Sign Up</button>
-    <div class="tab-indicator"></div>
-  </nav>
-
-  <div class="success-message" id="login-success">
-    Welcome back! You've successfully signed in.
+  <div class="bg-shapes" aria-hidden="true">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
   </div>
 
-  <form id="login-form" novalidate>
-    <div class="floating-label">
-      <input type="email" id="login-email" name='email' placeholder=" " required aria-describedby="login-email-error">
-        <label for="login-email">Email Address</label>
-        <div class="error-message" id="login-email-error">Please enter a valid email address</div>
-    </div>
-
-    <div class="floating-label">
-      <input type="password" id="login-password" name="password" placeholder=" " required minlength="6"
-        aria-describedby="login-password-error">
-        <label for="login-password">Password</label>
-        <div class="error-message" id="login-password-error">Password must be of at least 6 characters</div>
-    
-    </div>
-
-    <div class="checkbox-group">
-      <input type="checkbox" id="remember-me" name="remember">
-      <label for="remember-me">Remember me</label>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Sign In</button>
-  </form>
-
-<!-- 
-  <form id="login-form" novalidate>
-    <div class="floating-label">
-        <input type="email" id="login-email" name="email" placeholder=" " required 
-               aria-describedby="login-email-error">
-        <label for="login-email">Email Address</label>
-        <div class="error-message" id="login-email-error">Please enter a valid email address</div>
-    </div>
-
-    <div class="floating-label">
-        <input type="password" id="login-password" name="password" placeholder=" " required 
-               minlength="6" aria-describedby="login-password-error">
-        <label for="login-password">Password</label>
-        <div class="error-message" id="login-password-error">Password must be at least 6 characters</div>
-    </div>
-
-    <div class="checkbox-group">
-        <input type="checkbox" id="remember-me" name="remember">
-        <label for="remember-me">Remember me</label>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Sign In</button>
-</form> -->
-
-
-
-
-
-
-  <!-- <button class="tab-btn active" id="login-tab" role="tab" aria-controls="login-panel" aria-selected="true">
-    Sign In
-</button>
-<button class="tab-btn" id="signup-tab" role="tab" aria-controls="signup-panel" aria-selected="false">
-    Sign Up
-</button> -->
+  <main class="auth-container">
+    <header class="auth-header">
+      <h1>Welcome</h1>
+      <p>Please sign in to your account or create a new one</p>
+    </header>
+  
+    <nav class="tab-nav" role="tablist">
+      <button class="tab-btn" role="tab" id="login-tab" aria-controls="login-panel" aria-selected="true">Sign In</button>
+      <button class="tab-btn" role="tab" id="signup-tab" aria-controls="signup-panel" aria-selected="false">Sign Up</button>
+      <div class="tab-indicator"></div>
+    </nav>
   
   
+    <div class="form-container">
+  
+      <section class="form-panel active" id="login-panel" role="tabpanel" aria-labelledby="login-tab">
+        <div class="success-message" id="login-success">
+          Welcome back! You've successfully signed in.
+        </div>
+      
+        <form id="login-form" novalidate>
+          <div class="floating-label">
+            <input type="email" id="login-email" name='email' placeholder=" " required aria-describedby="login-email-error">
+              <label for="login-email">Email Address</label>
+              <div class="error-message" id="login-email-error">Please enter a valid email address</div>
+          </div>
+      
+          <div class="floating-label">
+            <input type="password" id="login-password" name="password" placeholder=" " required minlength="6"
+              aria-describedby="login-password-error">
+              <label for="login-password">Password</label>
+              <div class="error-message" id="login-password-error">Password must be of at least 6 characters</div>
+          
+          </div>
+      
+          <div class="checkbox-group">
+            <input type="checkbox" id="remember-me" name="remember">
+            <label for="remember-me">Remember me</label>
+          </div>
+      
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </form>
+  
+      </section>
+  
+      <!-- signup form -->
+      <section class="form-panel" id="signup-panel" role="tabpanel" aria-labelledby="signup-tab">
+        <div class="success-message" id="signup-success">
+          Account created successfully. Please check your email for verification
+        </div>
+      
+        <form id="signup-form" novalidate>
+          <div class="form-group">
+            <label for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" name="name" required minlength="2" aria-describedby="signup-name-error">
+            <div class="error-message" id="signup-name-error">Please enter your full name</div>
+          </div>
+  
+          <div class="form-group">
+            <label for="signup-email">Email Address</label>
+            <input type="email" id="signup-email" name="email" required aria-describedby="signup-email-error">
+            <div class="error-message" id="signup-email-error">Please enter a valid email address</div>
+          </div>
+  
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" name="password" required 
+              minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+              aria-describedby="signup-password-error">
+            <div class="error-message" id="signup-password-error">
+                Password must be at least 8 characters with at least one uppercase, lowercase, number, and special character
+            </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" name="confirmPassword" required 
+            aria-describedby="confirm-password-error">
+          <div class="error-message" id="confirm-password-error">Passwords do not match</div>
+        </div>
+  
+  
+        <div class="form-group">
+          <label for="signup-role">Role</label>
+          <select id="signup-role" name="role" required aria-describedby="signup-role-error">
+            <option value="">Select your role</option>
+            <option value="user">User</option>
+            <option value="admin">Administrator</option>
+            <option value="moderator">Moderator</option>
+          </select>
+          <div class="error-message" id="signup-role-error">Please select a role</div>
+        </div>
+  
+        <div class="checkbox-group">
+          <input type="checkbox" id="terms" name="terms" required>
+          <label for="terms">I agree to the <a href="#" target="_blank">Terms of service</a> and <a href="#" target="_blank">Privacy Policy</a></label>
+        </div>
+  
+        <button type="submit" class="btn btn-primary">Create Account</button>
+          
+          
+        </form>
+      </section>
+    </div>
+  
+    <footer class="auth-footer">
+      <p>&copy; 2025 Your Company. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+  </main>
+
+
+
+  <script>
+    const loginTab = document.getElementById('login-tab');
+    const signupTab = document.getElementById('signup-tab');
+    const loginPanel = document.getElementById('login-panel');
+    const signupPanel = document.getElementById('signup-panel');
+    const tabIndicator = document.querySelector('.tab-indicator');
+
+    function switchTab(targetTab, targetPanel){
+      //Update tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn=> {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      targetTab.classList.add('active');
+      targetTab.setAttribute('aria-selected','true');
+
+      // Update panels
+      document.querySelectorAll('.form-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+      targetPanel.classList.add('active');
+
+      // Update Indicator
+      if(targetTab === signupTab){
+        tabIndicator.classList.add('signup')
+      } else {
+        tabIndicator.classList.remove('signup');
+      }
+    }
+
+
+    loginTab.addEventListener('click', () => switchTab(loginTab, loginPanel));
+    signupTab.addEventListener('click', () => switchTab(signupTab, signupPanel));
+
+   
+    function validateField(field, errorElement, validator) {
+      const isValid = validator(field.value);
+      const group = field.closest('.form-group') || field.closest('.floating-label');
+            
+      if (isValid) {
+        group?.classList.remove('error');
+        errorElement.style.display = 'none';
+      } else {
+        group?.classList.add('error');
+        errorElement.style.display = 'block';
+      }
+      return isValid;
+    }
+
+    // Email validation
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // Password validation
+    function isValidPassword(password) {
+      return password.length >= 8 && 
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
+    }
+
+
+    // Login Form Handling
+    const loginForm = document.getElementById('login-form');
+    const loginEmail = document.getElementById('login-email');
+    const loginPassword = document.getElementById('login-password');
+
+    loginEmail.addEventListener('blur', () => {
+      validateField(loginEmail, document.getElementById('login-email-error'), isValidEmail);
+    });
+
+    loginPassword.addEventListener('blur', () => {
+      validateField(loginPassword, document.getElementById('login-password-error'), 
+        password => password.length >= 6);
+    });
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const emailValid = validateField(loginEmail, document.getElementById('login-email-error'), isValidEmail);
+      const passwordValid = validateField(loginPassword, document.getElementById('login-password-error'), 
+        password => password.length >= 6);
+            
+      if (emailValid && passwordValid) {
+          document.getElementById('login-success').classList.add('show');
+          setTimeout(() => document.getElementById('login-success').classList.remove('show'), 3000);
+        }
+    });
+
+  // Signup Form Handling
+  const signupForm = document.getElementById('signup-form');
+  const signupName = document.getElementById('signup-name');
+  const signupEmail = document.getElementById('signup-email');
+  const signupPassword = document.getElementById('signup-password');
+  const confirmPassword = document.getElementById('confirm-password');
+  const signupRole = document.getElementById('signup-role');
+
+  signupEmail.addEventListener('blur', () => {
+    validateField(signupEmail, document.getElementById('signup-email-error'), isValidEmail);
+  });
+
+  signupPassword.addEventListener('blur', () => {
+    validateField(signupPassword, document.getElementById('signup-password-error'), isValidPassword);
+  });
+
+  confirmPassword.addEventListener('blur', () => {
+    validateField(confirmPassword, document.getElementById('confirm-password-error'), 
+      password => password === signupPassword.value);
+  });
+
+
+  signupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+            
+    const nameValid = validateField(signupName, document.getElementById('signup-name-error'), 
+      name => name.length >= 2);
+    const emailValid = validateField(signupEmail, document.getElementById('signup-email-error'), isValidEmail);
+    const passwordValid = validateField(signupPassword, document.getElementById('signup-password-error'), isValidPassword);
+    const confirmValid = validateField(confirmPassword, document.getElementById('confirm-password-error'), password => password === signupPassword.value);
+    const roleValid = validateField(signupRole, document.getElementById('signup-role-error'), role => role !== '');
+            
+    if (nameValid && emailValid && passwordValid && confirmValid && roleValid) {
+      document.getElementById('signup-success').classList.add('show');
+      setTimeout(() => document.getElementById('signup-success').classList.remove('show'), 3000);
+    }
+    });
+
+    // Real-time password confirmation
+    confirmPassword.addEventListener('input', () => {
+      validateField(confirmPassword, document.getElementById('confirm-password-error'), 
+      password => password === signupPassword.value);
+    });
+
+
+    // Keyboard navigation for tabs
+    document.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab' && e.target.classList.contains('tab-btn')) {
+      e.preventDefault();
+      const currentTab = e.target;
+      const nextTab = currentTab === loginTab ? signupTab : loginTab;
+      const nextPanel = currentTab === loginTab ? signupPanel : loginPanel;
+      switchTab(nextTab, nextPanel);
+      nextTab.focus();
+    }
+    });
+
+  </script>
   
 </body>
 </html>
